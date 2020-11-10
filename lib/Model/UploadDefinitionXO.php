@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -30,13 +30,13 @@
 namespace Apiida\Nexus\Client\Model;
 
 use \ArrayAccess;
-use \Swagger\Client\ObjectSerializer;
+use \Apiida\Nexus\Client\ObjectSerializer;
 
 /**
  * UploadDefinitionXO Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -59,8 +59,8 @@ class UploadDefinitionXO implements ModelInterface, ArrayAccess
     protected static $swaggerTypes = [
         'format' => 'string',
         'multiple_upload' => 'bool',
-        'component_fields' => '\Swagger\Client\Model\UploadFieldDefinitionXO[]',
-        'asset_fields' => '\Swagger\Client\Model\UploadFieldDefinitionXO[]'
+        'component_fields' => '\Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[]',
+        'asset_fields' => '\Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[]'
     ];
 
     /**
@@ -273,7 +273,7 @@ class UploadDefinitionXO implements ModelInterface, ArrayAccess
     /**
      * Gets component_fields
      *
-     * @return \Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[]
+     * @return UploadFieldDefinitionXO[]
      */
     public function getComponentFields()
     {
@@ -283,7 +283,7 @@ class UploadDefinitionXO implements ModelInterface, ArrayAccess
     /**
      * Sets component_fields
      *
-     * @param \Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[] $component_fields component_fields
+     * @param UploadFieldDefinitionXO[] $component_fields component_fields
      *
      * @return $this
      */
@@ -297,7 +297,7 @@ class UploadDefinitionXO implements ModelInterface, ArrayAccess
     /**
      * Gets asset_fields
      *
-     * @return \Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[]
+     * @return UploadFieldDefinitionXO[]
      */
     public function getAssetFields()
     {
@@ -307,7 +307,7 @@ class UploadDefinitionXO implements ModelInterface, ArrayAccess
     /**
      * Sets asset_fields
      *
-     * @param \Apiida\Nexus\Client\Model\UploadFieldDefinitionXO[] $asset_fields asset_fields
+     * @param UploadFieldDefinitionXO[] $asset_fields asset_fields
      *
      * @return $this
      */

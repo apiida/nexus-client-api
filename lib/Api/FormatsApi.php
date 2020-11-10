@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,29 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\UploadDefinitionXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * FormatsApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -93,9 +100,9 @@ class FormatsApi
      * Get upload field requirements for each supported format
      *
      *
-     * @return \Apiida\Nexus\Client\Model\UploadDefinitionXO[]
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return UploadDefinitionXO[]
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function get1()
     {
@@ -109,13 +116,13 @@ class FormatsApi
      * Get upload field requirements for each supported format
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\UploadDefinitionXO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\UploadDefinitionXO[], HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function get1WithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\UploadDefinitionXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\UploadDefinitionXO[]';
         $request = $this->get1Request();
 
         try {
@@ -167,7 +174,7 @@ class FormatsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\UploadDefinitionXO[]',
+                        '\Apiida\Nexus\Client\Model\UploadDefinitionXO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -183,8 +190,8 @@ class FormatsApi
      * Get upload field requirements for each supported format
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function get1Async()
     {
@@ -202,12 +209,12 @@ class FormatsApi
      * Get upload field requirements for each supported format
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function get1AsyncWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\UploadDefinitionXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\UploadDefinitionXO[]';
         $request = $this->get1Request();
 
         return $this->client
@@ -251,8 +258,8 @@ class FormatsApi
      * Create request for operation 'get1'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function get1Request()
     {
@@ -287,7 +294,7 @@ class FormatsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -312,7 +319,7 @@ class FormatsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -328,7 +335,7 @@ class FormatsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -344,9 +351,9 @@ class FormatsApi
      *
      * @param  string $format The desired repository format (required)
      *
-     * @return \Apiida\Nexus\Client\Model\UploadDefinitionXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return UploadDefinitionXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function get2($format)
     {
@@ -361,13 +368,13 @@ class FormatsApi
      *
      * @param  string $format The desired repository format (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\UploadDefinitionXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\UploadDefinitionXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function get2WithHttpInfo($format)
     {
-        $returnType = '\Swagger\Client\Model\UploadDefinitionXO';
+        $returnType = '\Apiida\Nexus\Client\Model\UploadDefinitionXO';
         $request = $this->get2Request($format);
 
         try {
@@ -419,7 +426,7 @@ class FormatsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\UploadDefinitionXO',
+                        '\Apiida\Nexus\Client\Model\UploadDefinitionXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -436,8 +443,8 @@ class FormatsApi
      *
      * @param  string $format The desired repository format (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function get2Async($format)
     {
@@ -456,12 +463,12 @@ class FormatsApi
      *
      * @param  string $format The desired repository format (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function get2AsyncWithHttpInfo($format)
     {
-        $returnType = '\Swagger\Client\Model\UploadDefinitionXO';
+        $returnType = '\Apiida\Nexus\Client\Model\UploadDefinitionXO';
         $request = $this->get2Request($format);
 
         return $this->client
@@ -506,14 +513,14 @@ class FormatsApi
      *
      * @param  string $format The desired repository format (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function get2Request($format)
     {
         // verify the required parameter 'format' is set
         if ($format === null || (is_array($format) && count($format) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $format when calling get2'
             );
         }
@@ -556,7 +563,7 @@ class FormatsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -581,7 +588,7 @@ class FormatsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -597,7 +604,7 @@ class FormatsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -609,7 +616,7 @@ class FormatsApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -618,7 +625,7 @@ class FormatsApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

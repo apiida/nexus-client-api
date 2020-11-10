@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,30 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\AssetXO;
+use Apiida\Nexus\Client\Model\PageAssetXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * AssetsApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -65,9 +73,9 @@ class AssetsApi
     protected $headerSelector;
 
     /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
+     * @param ClientInterface|null $client
+     * @param Configuration|null $config
+     * @param HeaderSelector|null $selector
      */
     public function __construct(
         ClientInterface $client = null,
@@ -94,9 +102,9 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to delete (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function deleteAsset($id)
     {
@@ -110,9 +118,9 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to delete (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function deleteAssetWithHttpInfo($id)
     {
@@ -163,8 +171,8 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteAssetAsync($id)
     {
@@ -183,8 +191,8 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteAssetAsyncWithHttpInfo($id)
     {
@@ -219,14 +227,14 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function deleteAssetRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling deleteAsset'
             );
         }
@@ -269,7 +277,7 @@ class AssetsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -294,7 +302,7 @@ class AssetsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -310,7 +318,7 @@ class AssetsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -326,9 +334,9 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to get (required)
      *
-     * @return \Apiida\Nexus\Client\Model\AssetXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return AssetXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getAssetById($id)
     {
@@ -343,13 +351,13 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to get (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\AssetXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\AssetXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getAssetByIdWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\AssetXO';
+        $returnType = '\Apiida\Nexus\Client\Model\AssetXO';
         $request = $this->getAssetByIdRequest($id);
 
         try {
@@ -401,7 +409,7 @@ class AssetsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\AssetXO',
+                        '\Apiida\Nexus\Client\Model\AssetXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -418,8 +426,8 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getAssetByIdAsync($id)
     {
@@ -438,12 +446,12 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getAssetByIdAsyncWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\AssetXO';
+        $returnType = '\Apiida\Nexus\Client\Model\AssetXO';
         $request = $this->getAssetByIdRequest($id);
 
         return $this->client
@@ -488,14 +496,14 @@ class AssetsApi
      *
      * @param  string $id Id of the asset to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getAssetByIdRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling getAssetById'
             );
         }
@@ -538,7 +546,7 @@ class AssetsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -563,7 +571,7 @@ class AssetsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -579,7 +587,7 @@ class AssetsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -596,9 +604,9 @@ class AssetsApi
      * @param  string $repository Repository from which you would like to retrieve assets. (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @return \Apiida\Nexus\Client\Model\PageAssetXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return PageAssetXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getAssets($repository, $continuation_token = null)
     {
@@ -614,13 +622,13 @@ class AssetsApi
      * @param  string $repository Repository from which you would like to retrieve assets. (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\PageAssetXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\PageAssetXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getAssetsWithHttpInfo($repository, $continuation_token = null)
     {
-        $returnType = '\Swagger\Client\Model\PageAssetXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageAssetXO';
         $request = $this->getAssetsRequest($repository, $continuation_token);
 
         try {
@@ -672,7 +680,7 @@ class AssetsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\PageAssetXO',
+                        '\Apiida\Nexus\Client\Model\PageAssetXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -690,8 +698,8 @@ class AssetsApi
      * @param  string $repository Repository from which you would like to retrieve assets. (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getAssetsAsync($repository, $continuation_token = null)
     {
@@ -709,14 +717,14 @@ class AssetsApi
      * List assets
      *
      * @param  string $repository Repository from which you would like to retrieve assets. (required)
-     * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
+     * @param  string|null $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function getAssetsAsyncWithHttpInfo($repository, $continuation_token = null)
+    public function getAssetsAsyncWithHttpInfo(string $repository, $continuation_token = null)
     {
-        $returnType = '\Swagger\Client\Model\PageAssetXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageAssetXO';
         $request = $this->getAssetsRequest($repository, $continuation_token);
 
         return $this->client
@@ -760,16 +768,16 @@ class AssetsApi
      * Create request for operation 'getAssets'
      *
      * @param  string $repository Repository from which you would like to retrieve assets. (required)
-     * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
+     * @param  string|null $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
-    protected function getAssetsRequest($repository, $continuation_token = null)
+    protected function getAssetsRequest(string $repository, $continuation_token = null)
     {
         // verify the required parameter 'repository' is set
         if ($repository === null || (is_array($repository) && count($repository) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $repository when calling getAssets'
             );
         }
@@ -812,7 +820,7 @@ class AssetsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -837,7 +845,7 @@ class AssetsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -853,7 +861,7 @@ class AssetsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -865,7 +873,7 @@ class AssetsApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -874,7 +882,7 @@ class AssetsApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

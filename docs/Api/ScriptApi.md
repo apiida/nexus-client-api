@@ -22,14 +22,13 @@ Add a new script
 ### Example
 ```php
 <?php
-require_once(__DIR__ . '/vendor/autoload.php');
-
+use Apiida\Nexus\Client\Model\ScriptXO;require_once(__DIR__ . '/vendor/autoload.php');
 $apiInstance = new Apiida\Nexus\Client\Api\ScriptApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
-$body = new \Apiida\Nexus\Client\Model\ScriptXO(); // \Swagger\Client\Model\ScriptXO | 
+$body = new ScriptXO(); // \Swagger\Client\Model\ScriptXO | 
 
 try {
     $apiInstance->add($body);
@@ -163,15 +162,14 @@ Update stored script by name
 ### Example
 ```php
 <?php
-require_once(__DIR__ . '/vendor/autoload.php');
-
+use Apiida\Nexus\Client\Model\ScriptXO;require_once(__DIR__ . '/vendor/autoload.php');
 $apiInstance = new Apiida\Nexus\Client\Api\ScriptApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
 $name = "name_example"; // string | 
-$body = new \Apiida\Nexus\Client\Model\ScriptXO(); // \Swagger\Client\Model\ScriptXO | 
+$body = new ScriptXO(); // \Swagger\Client\Model\ScriptXO | 
 
 try {
     $apiInstance->edit($name, $body);

@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -30,13 +30,14 @@
 namespace Apiida\Nexus\Client\Model;
 
 use \ArrayAccess;
-use \Swagger\Client\ObjectSerializer;
+use \Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
 
 /**
  * ScriptXO Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -241,7 +242,7 @@ class ScriptXO implements ModelInterface, ArrayAccess
     {
 
         if (!is_null($name) && (!preg_match("/^[a-zA-Z0-9\\-]{1}[a-zA-Z0-9_\\-\\.]*$/", $name))) {
-            throw new \InvalidArgumentException("invalid value for $name when calling ScriptXO., must conform to the pattern /^[a-zA-Z0-9\\-]{1}[a-zA-Z0-9_\\-\\.]*$/.");
+            throw new InvalidArgumentException("invalid value for $name when calling ScriptXO., must conform to the pattern /^[a-zA-Z0-9\\-]{1}[a-zA-Z0-9_\\-\\.]*$/.");
         }
 
         $this->container['name'] = $name;

@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,32 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\ComponentXO;
+use Apiida\Nexus\Client\Model\PageComponentXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use SplFileObject;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
+use function GuzzleHttp\Psr7\try_fopen;
 
 /**
  * ComponentsApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -94,9 +104,9 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to delete (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function deleteComponent($id)
     {
@@ -110,9 +120,9 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to delete (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function deleteComponentWithHttpInfo($id)
     {
@@ -163,8 +173,8 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteComponentAsync($id)
     {
@@ -183,8 +193,8 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteComponentAsyncWithHttpInfo($id)
     {
@@ -219,14 +229,14 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to delete (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function deleteComponentRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling deleteComponent'
             );
         }
@@ -269,7 +279,7 @@ class ComponentsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -294,7 +304,7 @@ class ComponentsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -310,7 +320,7 @@ class ComponentsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -326,9 +336,9 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to retrieve (required)
      *
-     * @return \Apiida\Nexus\Client\Model\ComponentXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return ComponentXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getComponentById($id)
     {
@@ -343,13 +353,13 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to retrieve (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\ComponentXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\ComponentXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getComponentByIdWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\ComponentXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ComponentXO';
         $request = $this->getComponentByIdRequest($id);
 
         try {
@@ -401,7 +411,7 @@ class ComponentsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\ComponentXO',
+                        '\Apiida\Nexus\Client\Model\ComponentXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -418,8 +428,8 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to retrieve (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getComponentByIdAsync($id)
     {
@@ -438,12 +448,12 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to retrieve (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getComponentByIdAsyncWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\ComponentXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ComponentXO';
         $request = $this->getComponentByIdRequest($id);
 
         return $this->client
@@ -488,14 +498,14 @@ class ComponentsApi
      *
      * @param  string $id ID of the component to retrieve (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getComponentByIdRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling getComponentById'
             );
         }
@@ -538,7 +548,7 @@ class ComponentsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -563,7 +573,7 @@ class ComponentsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -579,7 +589,7 @@ class ComponentsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -596,9 +606,9 @@ class ComponentsApi
      * @param  string $repository Repository from which you would like to retrieve components (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @return \Apiida\Nexus\Client\Model\PageComponentXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return PageComponentXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getComponents($repository, $continuation_token = null)
     {
@@ -614,13 +624,13 @@ class ComponentsApi
      * @param  string $repository Repository from which you would like to retrieve components (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\PageComponentXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\PageComponentXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getComponentsWithHttpInfo($repository, $continuation_token = null)
     {
-        $returnType = '\Swagger\Client\Model\PageComponentXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageComponentXO';
         $request = $this->getComponentsRequest($repository, $continuation_token);
 
         try {
@@ -672,7 +682,7 @@ class ComponentsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\PageComponentXO',
+                        '\Apiida\Nexus\Client\Model\PageComponentXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -690,8 +700,8 @@ class ComponentsApi
      * @param  string $repository Repository from which you would like to retrieve components (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getComponentsAsync($repository, $continuation_token = null)
     {
@@ -711,12 +721,12 @@ class ComponentsApi
      * @param  string $repository Repository from which you would like to retrieve components (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getComponentsAsyncWithHttpInfo($repository, $continuation_token = null)
     {
-        $returnType = '\Swagger\Client\Model\PageComponentXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageComponentXO';
         $request = $this->getComponentsRequest($repository, $continuation_token);
 
         return $this->client
@@ -762,14 +772,14 @@ class ComponentsApi
      * @param  string $repository Repository from which you would like to retrieve components (required)
      * @param  string $continuation_token A token returned by a prior request. If present, the next page of results are returned (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getComponentsRequest($repository, $continuation_token = null)
     {
         // verify the required parameter 'repository' is set
         if ($repository === null || (is_array($repository) && count($repository) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $repository when calling getComponents'
             );
         }
@@ -812,7 +822,7 @@ class ComponentsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -837,7 +847,7 @@ class ComponentsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -853,7 +863,7 @@ class ComponentsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -869,37 +879,37 @@ class ComponentsApi
      *
      * @param  string $repository Name of the repository to which you would like to upload the component (required)
      * @param  string $yum_directory yum Directory (optional)
-     * @param  \SplFileObject $yum_asset yum Asset (optional)
+     * @param  SplFileObject $yum_asset yum Asset (optional)
      * @param  string $yum_asset_filename yum Asset  Filename (optional)
-     * @param  \SplFileObject $rubygems_asset rubygems Asset (optional)
-     * @param  \SplFileObject $nuget_asset nuget Asset (optional)
+     * @param  SplFileObject $rubygems_asset rubygems Asset (optional)
+     * @param  SplFileObject $nuget_asset nuget Asset (optional)
      * @param  string $raw_directory raw Directory (optional)
-     * @param  \SplFileObject $raw_asset1 raw Asset 1 (optional)
+     * @param  SplFileObject $raw_asset1 raw Asset 1 (optional)
      * @param  string $raw_asset1_filename raw Asset 1 Filename (optional)
-     * @param  \SplFileObject $raw_asset2 raw Asset 2 (optional)
+     * @param  SplFileObject $raw_asset2 raw Asset 2 (optional)
      * @param  string $raw_asset2_filename raw Asset 2 Filename (optional)
-     * @param  \SplFileObject $raw_asset3 raw Asset 3 (optional)
+     * @param  SplFileObject $raw_asset3 raw Asset 3 (optional)
      * @param  string $raw_asset3_filename raw Asset 3 Filename (optional)
-     * @param  \SplFileObject $npm_asset npm Asset (optional)
+     * @param  SplFileObject $npm_asset npm Asset (optional)
      * @param  string $maven2_group_id maven2 Group ID (optional)
      * @param  string $maven2_artifact_id maven2 Artifact ID (optional)
      * @param  string $maven2_version maven2 Version (optional)
      * @param  bool $maven2_generate_pom maven2 Generate a POM file with these coordinates (optional)
      * @param  string $maven2_packaging maven2 Packaging (optional)
-     * @param  \SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
+     * @param  SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
      * @param  string $maven2_asset1_classifier maven2 Asset 1 Classifier (optional)
      * @param  string $maven2_asset1_extension maven2 Asset 1 Extension (optional)
-     * @param  \SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
+     * @param  SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
      * @param  string $maven2_asset2_classifier maven2 Asset 2 Classifier (optional)
      * @param  string $maven2_asset2_extension maven2 Asset 2 Extension (optional)
-     * @param  \SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
+     * @param  SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
      * @param  string $maven2_asset3_classifier maven2 Asset 3 Classifier (optional)
      * @param  string $maven2_asset3_extension maven2 Asset 3 Extension (optional)
-     * @param  \SplFileObject $pypi_asset pypi Asset (optional)
+     * @param  SplFileObject $pypi_asset pypi Asset (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
      */
     public function uploadComponent($repository, $yum_directory = null, $yum_asset = null, $yum_asset_filename = null, $rubygems_asset = null, $nuget_asset = null, $raw_directory = null, $raw_asset1 = null, $raw_asset1_filename = null, $raw_asset2 = null, $raw_asset2_filename = null, $raw_asset3 = null, $raw_asset3_filename = null, $npm_asset = null, $maven2_group_id = null, $maven2_artifact_id = null, $maven2_version = null, $maven2_generate_pom = null, $maven2_packaging = null, $maven2_asset1 = null, $maven2_asset1_classifier = null, $maven2_asset1_extension = null, $maven2_asset2 = null, $maven2_asset2_classifier = null, $maven2_asset2_extension = null, $maven2_asset3 = null, $maven2_asset3_classifier = null, $maven2_asset3_extension = null, $pypi_asset = null)
     {
@@ -913,37 +923,37 @@ class ComponentsApi
      *
      * @param  string $repository Name of the repository to which you would like to upload the component (required)
      * @param  string $yum_directory yum Directory (optional)
-     * @param  \SplFileObject $yum_asset yum Asset (optional)
+     * @param  SplFileObject $yum_asset yum Asset (optional)
      * @param  string $yum_asset_filename yum Asset  Filename (optional)
-     * @param  \SplFileObject $rubygems_asset rubygems Asset (optional)
-     * @param  \SplFileObject $nuget_asset nuget Asset (optional)
+     * @param  SplFileObject $rubygems_asset rubygems Asset (optional)
+     * @param  SplFileObject $nuget_asset nuget Asset (optional)
      * @param  string $raw_directory raw Directory (optional)
-     * @param  \SplFileObject $raw_asset1 raw Asset 1 (optional)
+     * @param  SplFileObject $raw_asset1 raw Asset 1 (optional)
      * @param  string $raw_asset1_filename raw Asset 1 Filename (optional)
-     * @param  \SplFileObject $raw_asset2 raw Asset 2 (optional)
+     * @param  SplFileObject $raw_asset2 raw Asset 2 (optional)
      * @param  string $raw_asset2_filename raw Asset 2 Filename (optional)
-     * @param  \SplFileObject $raw_asset3 raw Asset 3 (optional)
+     * @param  SplFileObject $raw_asset3 raw Asset 3 (optional)
      * @param  string $raw_asset3_filename raw Asset 3 Filename (optional)
-     * @param  \SplFileObject $npm_asset npm Asset (optional)
+     * @param  SplFileObject $npm_asset npm Asset (optional)
      * @param  string $maven2_group_id maven2 Group ID (optional)
      * @param  string $maven2_artifact_id maven2 Artifact ID (optional)
      * @param  string $maven2_version maven2 Version (optional)
      * @param  bool $maven2_generate_pom maven2 Generate a POM file with these coordinates (optional)
      * @param  string $maven2_packaging maven2 Packaging (optional)
-     * @param  \SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
+     * @param  SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
      * @param  string $maven2_asset1_classifier maven2 Asset 1 Classifier (optional)
      * @param  string $maven2_asset1_extension maven2 Asset 1 Extension (optional)
-     * @param  \SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
+     * @param  SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
      * @param  string $maven2_asset2_classifier maven2 Asset 2 Classifier (optional)
      * @param  string $maven2_asset2_extension maven2 Asset 2 Extension (optional)
-     * @param  \SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
+     * @param  SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
      * @param  string $maven2_asset3_classifier maven2 Asset 3 Classifier (optional)
      * @param  string $maven2_asset3_extension maven2 Asset 3 Extension (optional)
-     * @param  \SplFileObject $pypi_asset pypi Asset (optional)
+     * @param  SplFileObject $pypi_asset pypi Asset (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
      */
     public function uploadComponentWithHttpInfo($repository, $yum_directory = null, $yum_asset = null, $yum_asset_filename = null, $rubygems_asset = null, $nuget_asset = null, $raw_directory = null, $raw_asset1 = null, $raw_asset1_filename = null, $raw_asset2 = null, $raw_asset2_filename = null, $raw_asset3 = null, $raw_asset3_filename = null, $npm_asset = null, $maven2_group_id = null, $maven2_artifact_id = null, $maven2_version = null, $maven2_generate_pom = null, $maven2_packaging = null, $maven2_asset1 = null, $maven2_asset1_classifier = null, $maven2_asset1_extension = null, $maven2_asset2 = null, $maven2_asset2_classifier = null, $maven2_asset2_extension = null, $maven2_asset3 = null, $maven2_asset3_classifier = null, $maven2_asset3_extension = null, $pypi_asset = null)
     {
@@ -994,36 +1004,36 @@ class ComponentsApi
      *
      * @param  string $repository Name of the repository to which you would like to upload the component (required)
      * @param  string $yum_directory yum Directory (optional)
-     * @param  \SplFileObject $yum_asset yum Asset (optional)
+     * @param  SplFileObject $yum_asset yum Asset (optional)
      * @param  string $yum_asset_filename yum Asset  Filename (optional)
-     * @param  \SplFileObject $rubygems_asset rubygems Asset (optional)
-     * @param  \SplFileObject $nuget_asset nuget Asset (optional)
+     * @param  SplFileObject $rubygems_asset rubygems Asset (optional)
+     * @param  SplFileObject $nuget_asset nuget Asset (optional)
      * @param  string $raw_directory raw Directory (optional)
-     * @param  \SplFileObject $raw_asset1 raw Asset 1 (optional)
+     * @param  SplFileObject $raw_asset1 raw Asset 1 (optional)
      * @param  string $raw_asset1_filename raw Asset 1 Filename (optional)
-     * @param  \SplFileObject $raw_asset2 raw Asset 2 (optional)
+     * @param  SplFileObject $raw_asset2 raw Asset 2 (optional)
      * @param  string $raw_asset2_filename raw Asset 2 Filename (optional)
-     * @param  \SplFileObject $raw_asset3 raw Asset 3 (optional)
+     * @param  SplFileObject $raw_asset3 raw Asset 3 (optional)
      * @param  string $raw_asset3_filename raw Asset 3 Filename (optional)
-     * @param  \SplFileObject $npm_asset npm Asset (optional)
+     * @param  SplFileObject $npm_asset npm Asset (optional)
      * @param  string $maven2_group_id maven2 Group ID (optional)
      * @param  string $maven2_artifact_id maven2 Artifact ID (optional)
      * @param  string $maven2_version maven2 Version (optional)
      * @param  bool $maven2_generate_pom maven2 Generate a POM file with these coordinates (optional)
      * @param  string $maven2_packaging maven2 Packaging (optional)
-     * @param  \SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
+     * @param  SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
      * @param  string $maven2_asset1_classifier maven2 Asset 1 Classifier (optional)
      * @param  string $maven2_asset1_extension maven2 Asset 1 Extension (optional)
-     * @param  \SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
+     * @param  SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
      * @param  string $maven2_asset2_classifier maven2 Asset 2 Classifier (optional)
      * @param  string $maven2_asset2_extension maven2 Asset 2 Extension (optional)
-     * @param  \SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
+     * @param  SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
      * @param  string $maven2_asset3_classifier maven2 Asset 3 Classifier (optional)
      * @param  string $maven2_asset3_extension maven2 Asset 3 Extension (optional)
-     * @param  \SplFileObject $pypi_asset pypi Asset (optional)
+     * @param  SplFileObject $pypi_asset pypi Asset (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function uploadComponentAsync($repository, $yum_directory = null, $yum_asset = null, $yum_asset_filename = null, $rubygems_asset = null, $nuget_asset = null, $raw_directory = null, $raw_asset1 = null, $raw_asset1_filename = null, $raw_asset2 = null, $raw_asset2_filename = null, $raw_asset3 = null, $raw_asset3_filename = null, $npm_asset = null, $maven2_group_id = null, $maven2_artifact_id = null, $maven2_version = null, $maven2_generate_pom = null, $maven2_packaging = null, $maven2_asset1 = null, $maven2_asset1_classifier = null, $maven2_asset1_extension = null, $maven2_asset2 = null, $maven2_asset2_classifier = null, $maven2_asset2_extension = null, $maven2_asset3 = null, $maven2_asset3_classifier = null, $maven2_asset3_extension = null, $pypi_asset = null)
     {
@@ -1042,36 +1052,36 @@ class ComponentsApi
      *
      * @param  string $repository Name of the repository to which you would like to upload the component (required)
      * @param  string $yum_directory yum Directory (optional)
-     * @param  \SplFileObject $yum_asset yum Asset (optional)
+     * @param  SplFileObject $yum_asset yum Asset (optional)
      * @param  string $yum_asset_filename yum Asset  Filename (optional)
-     * @param  \SplFileObject $rubygems_asset rubygems Asset (optional)
-     * @param  \SplFileObject $nuget_asset nuget Asset (optional)
+     * @param  SplFileObject $rubygems_asset rubygems Asset (optional)
+     * @param  SplFileObject $nuget_asset nuget Asset (optional)
      * @param  string $raw_directory raw Directory (optional)
-     * @param  \SplFileObject $raw_asset1 raw Asset 1 (optional)
+     * @param  SplFileObject $raw_asset1 raw Asset 1 (optional)
      * @param  string $raw_asset1_filename raw Asset 1 Filename (optional)
-     * @param  \SplFileObject $raw_asset2 raw Asset 2 (optional)
+     * @param  SplFileObject $raw_asset2 raw Asset 2 (optional)
      * @param  string $raw_asset2_filename raw Asset 2 Filename (optional)
-     * @param  \SplFileObject $raw_asset3 raw Asset 3 (optional)
+     * @param  SplFileObject $raw_asset3 raw Asset 3 (optional)
      * @param  string $raw_asset3_filename raw Asset 3 Filename (optional)
-     * @param  \SplFileObject $npm_asset npm Asset (optional)
+     * @param  SplFileObject $npm_asset npm Asset (optional)
      * @param  string $maven2_group_id maven2 Group ID (optional)
      * @param  string $maven2_artifact_id maven2 Artifact ID (optional)
      * @param  string $maven2_version maven2 Version (optional)
      * @param  bool $maven2_generate_pom maven2 Generate a POM file with these coordinates (optional)
      * @param  string $maven2_packaging maven2 Packaging (optional)
-     * @param  \SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
+     * @param  SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
      * @param  string $maven2_asset1_classifier maven2 Asset 1 Classifier (optional)
      * @param  string $maven2_asset1_extension maven2 Asset 1 Extension (optional)
-     * @param  \SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
+     * @param  SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
      * @param  string $maven2_asset2_classifier maven2 Asset 2 Classifier (optional)
      * @param  string $maven2_asset2_extension maven2 Asset 2 Extension (optional)
-     * @param  \SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
+     * @param  SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
      * @param  string $maven2_asset3_classifier maven2 Asset 3 Classifier (optional)
      * @param  string $maven2_asset3_extension maven2 Asset 3 Extension (optional)
-     * @param  \SplFileObject $pypi_asset pypi Asset (optional)
+     * @param  SplFileObject $pypi_asset pypi Asset (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function uploadComponentAsyncWithHttpInfo($repository, $yum_directory = null, $yum_asset = null, $yum_asset_filename = null, $rubygems_asset = null, $nuget_asset = null, $raw_directory = null, $raw_asset1 = null, $raw_asset1_filename = null, $raw_asset2 = null, $raw_asset2_filename = null, $raw_asset3 = null, $raw_asset3_filename = null, $npm_asset = null, $maven2_group_id = null, $maven2_artifact_id = null, $maven2_version = null, $maven2_generate_pom = null, $maven2_packaging = null, $maven2_asset1 = null, $maven2_asset1_classifier = null, $maven2_asset1_extension = null, $maven2_asset2 = null, $maven2_asset2_classifier = null, $maven2_asset2_extension = null, $maven2_asset3 = null, $maven2_asset3_classifier = null, $maven2_asset3_extension = null, $pypi_asset = null)
     {
@@ -1106,42 +1116,42 @@ class ComponentsApi
      *
      * @param  string $repository Name of the repository to which you would like to upload the component (required)
      * @param  string $yum_directory yum Directory (optional)
-     * @param  \SplFileObject $yum_asset yum Asset (optional)
+     * @param  SplFileObject $yum_asset yum Asset (optional)
      * @param  string $yum_asset_filename yum Asset  Filename (optional)
-     * @param  \SplFileObject $rubygems_asset rubygems Asset (optional)
-     * @param  \SplFileObject $nuget_asset nuget Asset (optional)
+     * @param  SplFileObject $rubygems_asset rubygems Asset (optional)
+     * @param  SplFileObject $nuget_asset nuget Asset (optional)
      * @param  string $raw_directory raw Directory (optional)
-     * @param  \SplFileObject $raw_asset1 raw Asset 1 (optional)
+     * @param  SplFileObject $raw_asset1 raw Asset 1 (optional)
      * @param  string $raw_asset1_filename raw Asset 1 Filename (optional)
-     * @param  \SplFileObject $raw_asset2 raw Asset 2 (optional)
+     * @param  SplFileObject $raw_asset2 raw Asset 2 (optional)
      * @param  string $raw_asset2_filename raw Asset 2 Filename (optional)
-     * @param  \SplFileObject $raw_asset3 raw Asset 3 (optional)
+     * @param  SplFileObject $raw_asset3 raw Asset 3 (optional)
      * @param  string $raw_asset3_filename raw Asset 3 Filename (optional)
-     * @param  \SplFileObject $npm_asset npm Asset (optional)
+     * @param  SplFileObject $npm_asset npm Asset (optional)
      * @param  string $maven2_group_id maven2 Group ID (optional)
      * @param  string $maven2_artifact_id maven2 Artifact ID (optional)
      * @param  string $maven2_version maven2 Version (optional)
      * @param  bool $maven2_generate_pom maven2 Generate a POM file with these coordinates (optional)
      * @param  string $maven2_packaging maven2 Packaging (optional)
-     * @param  \SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
+     * @param  SplFileObject $maven2_asset1 maven2 Asset 1 (optional)
      * @param  string $maven2_asset1_classifier maven2 Asset 1 Classifier (optional)
      * @param  string $maven2_asset1_extension maven2 Asset 1 Extension (optional)
-     * @param  \SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
+     * @param  SplFileObject $maven2_asset2 maven2 Asset 2 (optional)
      * @param  string $maven2_asset2_classifier maven2 Asset 2 Classifier (optional)
      * @param  string $maven2_asset2_extension maven2 Asset 2 Extension (optional)
-     * @param  \SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
+     * @param  SplFileObject $maven2_asset3 maven2 Asset 3 (optional)
      * @param  string $maven2_asset3_classifier maven2 Asset 3 Classifier (optional)
      * @param  string $maven2_asset3_extension maven2 Asset 3 Extension (optional)
-     * @param  \SplFileObject $pypi_asset pypi Asset (optional)
+     * @param  SplFileObject $pypi_asset pypi Asset (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws InvalidArgumentException
+     * @return Request
      */
     protected function uploadComponentRequest($repository, $yum_directory = null, $yum_asset = null, $yum_asset_filename = null, $rubygems_asset = null, $nuget_asset = null, $raw_directory = null, $raw_asset1 = null, $raw_asset1_filename = null, $raw_asset2 = null, $raw_asset2_filename = null, $raw_asset3 = null, $raw_asset3_filename = null, $npm_asset = null, $maven2_group_id = null, $maven2_artifact_id = null, $maven2_version = null, $maven2_generate_pom = null, $maven2_packaging = null, $maven2_asset1 = null, $maven2_asset1_classifier = null, $maven2_asset1_extension = null, $maven2_asset2 = null, $maven2_asset2_classifier = null, $maven2_asset2_extension = null, $maven2_asset3 = null, $maven2_asset3_classifier = null, $maven2_asset3_extension = null, $pypi_asset = null)
     {
         // verify the required parameter 'repository' is set
         if ($repository === null || (is_array($repository) && count($repository) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $repository when calling uploadComponent'
             );
         }
@@ -1166,7 +1176,7 @@ class ComponentsApi
         // form params
         if ($yum_asset !== null) {
             $multipart = true;
-            $formParams['yum.asset'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($yum_asset), 'rb');
+            $formParams['yum.asset'] = try_fopen(ObjectSerializer::toFormValue($yum_asset), 'rb');
         }
         // form params
         if ($yum_asset_filename !== null) {
@@ -1175,12 +1185,12 @@ class ComponentsApi
         // form params
         if ($rubygems_asset !== null) {
             $multipart = true;
-            $formParams['rubygems.asset'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($rubygems_asset), 'rb');
+            $formParams['rubygems.asset'] = try_fopen(ObjectSerializer::toFormValue($rubygems_asset), 'rb');
         }
         // form params
         if ($nuget_asset !== null) {
             $multipart = true;
-            $formParams['nuget.asset'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($nuget_asset), 'rb');
+            $formParams['nuget.asset'] = try_fopen(ObjectSerializer::toFormValue($nuget_asset), 'rb');
         }
         // form params
         if ($raw_directory !== null) {
@@ -1189,7 +1199,7 @@ class ComponentsApi
         // form params
         if ($raw_asset1 !== null) {
             $multipart = true;
-            $formParams['raw.asset1'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($raw_asset1), 'rb');
+            $formParams['raw.asset1'] = try_fopen(ObjectSerializer::toFormValue($raw_asset1), 'rb');
         }
         // form params
         if ($raw_asset1_filename !== null) {
@@ -1198,7 +1208,7 @@ class ComponentsApi
         // form params
         if ($raw_asset2 !== null) {
             $multipart = true;
-            $formParams['raw.asset2'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($raw_asset2), 'rb');
+            $formParams['raw.asset2'] = try_fopen(ObjectSerializer::toFormValue($raw_asset2), 'rb');
         }
         // form params
         if ($raw_asset2_filename !== null) {
@@ -1207,7 +1217,7 @@ class ComponentsApi
         // form params
         if ($raw_asset3 !== null) {
             $multipart = true;
-            $formParams['raw.asset3'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($raw_asset3), 'rb');
+            $formParams['raw.asset3'] = try_fopen(ObjectSerializer::toFormValue($raw_asset3), 'rb');
         }
         // form params
         if ($raw_asset3_filename !== null) {
@@ -1216,7 +1226,7 @@ class ComponentsApi
         // form params
         if ($npm_asset !== null) {
             $multipart = true;
-            $formParams['npm.asset'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($npm_asset), 'rb');
+            $formParams['npm.asset'] = try_fopen(ObjectSerializer::toFormValue($npm_asset), 'rb');
         }
         // form params
         if ($maven2_group_id !== null) {
@@ -1241,7 +1251,7 @@ class ComponentsApi
         // form params
         if ($maven2_asset1 !== null) {
             $multipart = true;
-            $formParams['maven2.asset1'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($maven2_asset1), 'rb');
+            $formParams['maven2.asset1'] = try_fopen(ObjectSerializer::toFormValue($maven2_asset1), 'rb');
         }
         // form params
         if ($maven2_asset1_classifier !== null) {
@@ -1254,7 +1264,7 @@ class ComponentsApi
         // form params
         if ($maven2_asset2 !== null) {
             $multipart = true;
-            $formParams['maven2.asset2'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($maven2_asset2), 'rb');
+            $formParams['maven2.asset2'] = try_fopen(ObjectSerializer::toFormValue($maven2_asset2), 'rb');
         }
         // form params
         if ($maven2_asset2_classifier !== null) {
@@ -1267,7 +1277,7 @@ class ComponentsApi
         // form params
         if ($maven2_asset3 !== null) {
             $multipart = true;
-            $formParams['maven2.asset3'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($maven2_asset3), 'rb');
+            $formParams['maven2.asset3'] = try_fopen(ObjectSerializer::toFormValue($maven2_asset3), 'rb');
         }
         // form params
         if ($maven2_asset3_classifier !== null) {
@@ -1280,7 +1290,7 @@ class ComponentsApi
         // form params
         if ($pypi_asset !== null) {
             $multipart = true;
-            $formParams['pypi.asset'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($pypi_asset), 'rb');
+            $formParams['pypi.asset'] = try_fopen(ObjectSerializer::toFormValue($pypi_asset), 'rb');
         }
         // body params
         $_tempBody = null;
@@ -1303,7 +1313,7 @@ class ComponentsApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -1328,7 +1338,7 @@ class ComponentsApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -1344,7 +1354,7 @@ class ComponentsApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1356,7 +1366,7 @@ class ComponentsApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -1365,7 +1375,7 @@ class ComponentsApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

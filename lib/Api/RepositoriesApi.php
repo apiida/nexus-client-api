@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,29 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\RepositoryXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * RepositoriesApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -93,9 +100,9 @@ class RepositoriesApi
      * List repositories
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Apiida\Nexus\Client\Model\RepositoryXO[]
+     * @return RepositoryXO[]
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getRepositories()
     {
@@ -109,13 +116,13 @@ class RepositoriesApi
      * List repositories
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\RepositoryXO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\RepositoryXO[], HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getRepositoriesWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\RepositoryXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\RepositoryXO[]';
         $request = $this->getRepositoriesRequest();
 
         try {
@@ -167,7 +174,7 @@ class RepositoriesApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\RepositoryXO[]',
+                        '\Apiida\Nexus\Client\Model\RepositoryXO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -183,8 +190,8 @@ class RepositoriesApi
      * List repositories
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getRepositoriesAsync()
     {
@@ -202,12 +209,12 @@ class RepositoriesApi
      * List repositories
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getRepositoriesAsyncWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\RepositoryXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\RepositoryXO[]';
         $request = $this->getRepositoriesRequest();
 
         return $this->client
@@ -251,8 +258,8 @@ class RepositoriesApi
      * Create request for operation 'getRepositories'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getRepositoriesRequest()
     {
@@ -287,7 +294,7 @@ class RepositoriesApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -312,7 +319,7 @@ class RepositoriesApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -328,7 +335,7 @@ class RepositoriesApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -340,7 +347,7 @@ class RepositoriesApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -349,7 +356,7 @@ class RepositoriesApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

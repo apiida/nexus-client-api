@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,29 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * BlobStoreApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -94,9 +101,9 @@ class BlobStoreApi
      *
      * @param  string $id id (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO
+     * @return BlobStoreQuotaResultXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function quotaStatus($id)
     {
@@ -111,13 +118,13 @@ class BlobStoreApi
      *
      * @param  string $id (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\BlobStoreQuotaResultXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function quotaStatusWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\BlobStoreQuotaResultXO';
+        $returnType = '\Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO';
         $request = $this->quotaStatusRequest($id);
 
         try {
@@ -169,7 +176,7 @@ class BlobStoreApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\BlobStoreQuotaResultXO',
+                        '\Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -186,8 +193,8 @@ class BlobStoreApi
      *
      * @param  string $id (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function quotaStatusAsync($id)
     {
@@ -206,12 +213,12 @@ class BlobStoreApi
      *
      * @param  string $id (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function quotaStatusAsyncWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\BlobStoreQuotaResultXO';
+        $returnType = '\Apiida\Nexus\Client\Model\BlobStoreQuotaResultXO';
         $request = $this->quotaStatusRequest($id);
 
         return $this->client
@@ -256,14 +263,14 @@ class BlobStoreApi
      *
      * @param  string $id (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function quotaStatusRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling quotaStatus'
             );
         }
@@ -306,7 +313,7 @@ class BlobStoreApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -331,7 +338,7 @@ class BlobStoreApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -347,7 +354,7 @@ class BlobStoreApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -359,7 +366,7 @@ class BlobStoreApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -368,7 +375,7 @@ class BlobStoreApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

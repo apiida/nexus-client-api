@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,30 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\PageTaskXO;
+use Apiida\Nexus\Client\Model\TaskXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * TasksApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -65,9 +73,9 @@ class TasksApi
     protected $headerSelector;
 
     /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
+     * @param ClientInterface|null $client
+     * @param Configuration|null $config
+     * @param HeaderSelector|null $selector
      */
     public function __construct(
         ClientInterface $client = null,
@@ -94,11 +102,11 @@ class TasksApi
      *
      * @param  string $id Id of the task to get (required)
      *
-     * @return \Apiida\Nexus\Client\Model\TaskXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return TaskXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
-    public function getTaskById($id)
+    public function getTaskById(string $id)
     {
         list($response) = $this->getTaskByIdWithHttpInfo($id);
         return $response;
@@ -111,13 +119,13 @@ class TasksApi
      *
      * @param  string $id Id of the task to get (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\TaskXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\TaskXO, HTTP status code, HTTP response headers (array of strings)
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getTaskByIdWithHttpInfo($id)
     {
-        $returnType = '\Swagger\Client\Model\TaskXO';
+        $returnType = '\Apiida\Nexus\Client\Model\TaskXO';
         $request = $this->getTaskByIdRequest($id);
 
         try {
@@ -169,7 +177,7 @@ class TasksApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\TaskXO',
+                        '\Apiida\Nexus\Client\Model\TaskXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -186,10 +194,10 @@ class TasksApi
      *
      * @param  string $id Id of the task to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function getTaskByIdAsync($id)
+    public function getTaskByIdAsync(string $id)
     {
         return $this->getTaskByIdAsyncWithHttpInfo($id)
             ->then(
@@ -206,12 +214,12 @@ class TasksApi
      *
      * @param  string $id Id of the task to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function getTaskByIdAsyncWithHttpInfo($id)
+    public function getTaskByIdAsyncWithHttpInfo(string $id)
     {
-        $returnType = '\Swagger\Client\Model\TaskXO';
+        $returnType = '\Apiida\Nexus\Client\Model\TaskXO';
         $request = $this->getTaskByIdRequest($id);
 
         return $this->client
@@ -256,14 +264,14 @@ class TasksApi
      *
      * @param  string $id Id of the task to get (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
-    protected function getTaskByIdRequest($id)
+    protected function getTaskByIdRequest(string $id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling getTaskById'
             );
         }
@@ -306,7 +314,7 @@ class TasksApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -331,7 +339,7 @@ class TasksApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -347,7 +355,7 @@ class TasksApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -363,9 +371,9 @@ class TasksApi
      *
      * @param  string $type Type of the tasks to get (optional)
      *
-     * @return \Apiida\Nexus\Client\Model\PageTaskXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return PageTaskXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getTasks($type = null)
     {
@@ -380,13 +388,13 @@ class TasksApi
      *
      * @param  string $type Type of the tasks to get (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\PageTaskXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\PageTaskXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getTasksWithHttpInfo($type = null)
     {
-        $returnType = '\Swagger\Client\Model\PageTaskXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageTaskXO';
         $request = $this->getTasksRequest($type);
 
         try {
@@ -438,7 +446,7 @@ class TasksApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\PageTaskXO',
+                        '\Apiida\Nexus\Client\Model\PageTaskXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -455,8 +463,8 @@ class TasksApi
      *
      * @param  string $type Type of the tasks to get (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getTasksAsync($type = null)
     {
@@ -475,12 +483,12 @@ class TasksApi
      *
      * @param  string $type Type of the tasks to get (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getTasksAsyncWithHttpInfo($type = null)
     {
-        $returnType = '\Swagger\Client\Model\PageTaskXO';
+        $returnType = '\Apiida\Nexus\Client\Model\PageTaskXO';
         $request = $this->getTasksRequest($type);
 
         return $this->client
@@ -525,8 +533,8 @@ class TasksApi
      *
      * @param  string $type Type of the tasks to get (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getTasksRequest($type = null)
     {
@@ -565,7 +573,7 @@ class TasksApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -590,7 +598,7 @@ class TasksApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -606,7 +614,7 @@ class TasksApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -622,9 +630,9 @@ class TasksApi
      *
      * @param  string $id Id of the task to run (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function run($id)
     {
@@ -638,9 +646,9 @@ class TasksApi
      *
      * @param  string $id Id of the task to run (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function runWithHttpInfo($id)
     {
@@ -691,10 +699,10 @@ class TasksApi
      *
      * @param  string $id Id of the task to run (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function runAsync($id)
+    public function runAsync(string $id)
     {
         return $this->runAsyncWithHttpInfo($id)
             ->then(
@@ -711,10 +719,10 @@ class TasksApi
      *
      * @param  string $id Id of the task to run (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function runAsyncWithHttpInfo($id)
+    public function runAsyncWithHttpInfo(string $id)
     {
         $returnType = '';
         $request = $this->runRequest($id);
@@ -747,14 +755,14 @@ class TasksApi
      *
      * @param  string $id Id of the task to run (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
-    protected function runRequest($id)
+    protected function runRequest(string $id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling run'
             );
         }
@@ -797,7 +805,7 @@ class TasksApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -822,7 +830,7 @@ class TasksApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -838,7 +846,7 @@ class TasksApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -854,11 +862,11 @@ class TasksApi
      *
      * @param  string $id Id of the task to stop (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
-    public function stop($id)
+    public function stop(string $id)
     {
         $this->stopWithHttpInfo($id);
     }
@@ -870,11 +878,11 @@ class TasksApi
      *
      * @param  string $id Id of the task to stop (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
-    public function stopWithHttpInfo($id)
+    public function stopWithHttpInfo(string $id)
     {
         $returnType = '';
         $request = $this->stopRequest($id);
@@ -923,10 +931,10 @@ class TasksApi
      *
      * @param  string $id Id of the task to stop (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function stopAsync($id)
+    public function stopAsync(string $id)
     {
         return $this->stopAsyncWithHttpInfo($id)
             ->then(
@@ -943,10 +951,10 @@ class TasksApi
      *
      * @param  string $id Id of the task to stop (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
-    public function stopAsyncWithHttpInfo($id)
+    public function stopAsyncWithHttpInfo(string $id)
     {
         $returnType = '';
         $request = $this->stopRequest($id);
@@ -979,14 +987,14 @@ class TasksApi
      *
      * @param  string $id Id of the task to stop (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws InvalidArgumentException
+     * @return Request
      */
-    protected function stopRequest($id)
+    protected function stopRequest(string $id)
     {
         // verify the required parameter 'id' is set
         if ($id === null || (is_array($id) && count($id) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $id when calling stop'
             );
         }
@@ -1029,7 +1037,7 @@ class TasksApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -1054,7 +1062,7 @@ class TasksApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -1070,7 +1078,7 @@ class TasksApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1082,7 +1090,7 @@ class TasksApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -1091,7 +1099,7 @@ class TasksApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

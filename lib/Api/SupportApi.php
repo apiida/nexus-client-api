@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -31,19 +31,25 @@ namespace Apiida\Nexus\Client\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * SupportApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -95,8 +101,8 @@ class SupportApi
      * @param  \Apiida\Nexus\Client\Model\Request $body body (optional)
      *
      * @return void
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function supportzip($body = null)
     {
@@ -111,8 +117,8 @@ class SupportApi
      * @param  \Apiida\Nexus\Client\Model\Request $body (optional)
      *
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function supportzipWithHttpInfo($body = null)
     {
@@ -163,8 +169,8 @@ class SupportApi
      *
      * @param  \Apiida\Nexus\Client\Model\Request $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function supportzipAsync($body = null)
     {
@@ -183,8 +189,8 @@ class SupportApi
      *
      * @param  \Apiida\Nexus\Client\Model\Request $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function supportzipAsyncWithHttpInfo($body = null)
     {
@@ -219,8 +225,8 @@ class SupportApi
      *
      * @param  \Apiida\Nexus\Client\Model\Request $body (optional)
      *
-     * @return \GuzzleHttp\Psr7\Request
-     *@throws \InvalidArgumentException
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function supportzipRequest($body = null)
     {
@@ -258,7 +264,7 @@ class SupportApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -283,7 +289,7 @@ class SupportApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -299,7 +305,7 @@ class SupportApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -311,7 +317,7 @@ class SupportApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -320,7 +326,7 @@ class SupportApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

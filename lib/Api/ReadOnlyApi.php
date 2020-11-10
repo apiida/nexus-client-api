@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,29 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\ReadOnlyState;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * ReadOnlyApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -93,9 +100,9 @@ class ReadOnlyApi
      * Forcibly release read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function forceRelease()
     {
@@ -108,9 +115,9 @@ class ReadOnlyApi
      * Forcibly release read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function forceReleaseWithHttpInfo()
     {
@@ -160,8 +167,8 @@ class ReadOnlyApi
      * Forcibly release read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function forceReleaseAsync()
     {
@@ -179,8 +186,8 @@ class ReadOnlyApi
      * Forcibly release read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function forceReleaseAsyncWithHttpInfo()
     {
@@ -214,8 +221,8 @@ class ReadOnlyApi
      * Create request for operation 'forceRelease'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function forceReleaseRequest()
     {
@@ -250,7 +257,7 @@ class ReadOnlyApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -275,7 +282,7 @@ class ReadOnlyApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -291,7 +298,7 @@ class ReadOnlyApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -306,9 +313,9 @@ class ReadOnlyApi
      * Enable read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function freeze()
     {
@@ -321,9 +328,9 @@ class ReadOnlyApi
      * Enable read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function freezeWithHttpInfo()
     {
@@ -373,8 +380,8 @@ class ReadOnlyApi
      * Enable read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function freezeAsync()
     {
@@ -392,8 +399,8 @@ class ReadOnlyApi
      * Enable read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function freezeAsyncWithHttpInfo()
     {
@@ -427,8 +434,8 @@ class ReadOnlyApi
      * Create request for operation 'freeze'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function freezeRequest()
     {
@@ -463,7 +470,7 @@ class ReadOnlyApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -488,7 +495,7 @@ class ReadOnlyApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -504,7 +511,7 @@ class ReadOnlyApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -519,9 +526,9 @@ class ReadOnlyApi
      * Get read-only state
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return \Apiida\Nexus\Client\Model\ReadOnlyState
+     * @return ReadOnlyState
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function get()
     {
@@ -535,13 +542,13 @@ class ReadOnlyApi
      * Get read-only state
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\ReadOnlyState, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\ReadOnlyState, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function getWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\ReadOnlyState';
+        $returnType = '\Apiida\Nexus\Client\Model\ReadOnlyState';
         $request = $this->getRequest();
 
         try {
@@ -593,7 +600,7 @@ class ReadOnlyApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\ReadOnlyState',
+                        '\Apiida\Nexus\Client\Model\ReadOnlyState',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -609,8 +616,8 @@ class ReadOnlyApi
      * Get read-only state
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getAsync()
     {
@@ -628,12 +635,12 @@ class ReadOnlyApi
      * Get read-only state
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function getAsyncWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\ReadOnlyState';
+        $returnType = '\Apiida\Nexus\Client\Model\ReadOnlyState';
         $request = $this->getRequest();
 
         return $this->client
@@ -677,8 +684,8 @@ class ReadOnlyApi
      * Create request for operation 'get'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function getRequest()
     {
@@ -713,7 +720,7 @@ class ReadOnlyApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -738,7 +745,7 @@ class ReadOnlyApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -754,7 +761,7 @@ class ReadOnlyApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -769,9 +776,9 @@ class ReadOnlyApi
      * Release read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function release()
     {
@@ -784,9 +791,9 @@ class ReadOnlyApi
      * Release read-only
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function releaseWithHttpInfo()
     {
@@ -836,8 +843,8 @@ class ReadOnlyApi
      * Release read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function releaseAsync()
     {
@@ -855,8 +862,8 @@ class ReadOnlyApi
      * Release read-only
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function releaseAsyncWithHttpInfo()
     {
@@ -890,8 +897,8 @@ class ReadOnlyApi
      * Create request for operation 'release'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @throws InvalidArgumentException
+     * @return Request
      */
     protected function releaseRequest()
     {
@@ -926,7 +933,7 @@ class ReadOnlyApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -951,7 +958,7 @@ class ReadOnlyApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -967,7 +974,7 @@ class ReadOnlyApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -979,7 +986,7 @@ class ReadOnlyApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -988,7 +995,7 @@ class ReadOnlyApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

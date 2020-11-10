@@ -17,14 +17,13 @@ Creates and downloads a support zip
 ### Example
 ```php
 <?php
-require_once(__DIR__ . '/vendor/autoload.php');
-
+use Apiida\Nexus\Client\Model\Request;require_once(__DIR__ . '/vendor/autoload.php');
 $apiInstance = new Apiida\Nexus\Client\Api\SupportApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
-$body = new \Apiida\Nexus\Client\Model\Request(); // \Swagger\Client\Model\Request | 
+$body = new Request(); // \Swagger\Client\Model\Request | 
 
 try {
     $apiInstance->supportzip($body);

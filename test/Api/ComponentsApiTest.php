@@ -26,7 +26,7 @@
  * Please update the test case below to test the endpoint.
  */
 
-namespace Apiida\Nexus\Client\Api\Api;
+namespace Apiida\Nexus\Client\Api;
 
 use Apiida\Nexus\Client\Configuration;
 use Apiida\Nexus\Client\ApiException;

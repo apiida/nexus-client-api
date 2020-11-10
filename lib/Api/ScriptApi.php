@@ -4,7 +4,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -28,22 +28,30 @@
 
 namespace Apiida\Nexus\Client\Api;
 
+use Apiida\Nexus\Client\Model\ScriptResultXO;
+use Apiida\Nexus\Client\Model\ScriptXO;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use Swagger\Client\ApiException;
-use Swagger\Client\Configuration;
-use Swagger\Client\HeaderSelector;
-use Swagger\Client\ObjectSerializer;
+use Apiida\Nexus\Client\ApiException;
+use Apiida\Nexus\Client\Configuration;
+use Apiida\Nexus\Client\HeaderSelector;
+use Apiida\Nexus\Client\ObjectSerializer;
+use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
+
+use function GuzzleHttp\Psr7\build_query;
 
 /**
  * ScriptApi Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -92,11 +100,11 @@ class ScriptApi
      *
      * Add a new script
      *
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body body (optional)
+     * @param  ScriptXO $body body (optional)
      *
      * @return void
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function add($body = null)
     {
@@ -108,11 +116,11 @@ class ScriptApi
      *
      * Add a new script
      *
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function addWithHttpInfo($body = null)
     {
@@ -161,10 +169,10 @@ class ScriptApi
      *
      * Add a new script
      *
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function addAsync($body = null)
     {
@@ -181,10 +189,10 @@ class ScriptApi
      *
      * Add a new script
      *
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function addAsyncWithHttpInfo($body = null)
     {
@@ -217,10 +225,10 @@ class ScriptApi
     /**
      * Create request for operation 'add'
      *
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Psr7\Request
-     *@throws \InvalidArgumentException
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function addRequest($body = null)
     {
@@ -258,7 +266,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -283,7 +291,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -299,7 +307,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -314,9 +322,9 @@ class ScriptApi
      * List all stored scripts
      *
      *
-     * @return \Apiida\Nexus\Client\Model\ScriptXO[]
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return ScriptXO[]
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function browse()
     {
@@ -330,13 +338,13 @@ class ScriptApi
      * List all stored scripts
      *
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\ScriptXO[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\ScriptXO[], HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function browseWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\ScriptXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptXO[]';
         $request = $this->browseRequest();
 
         try {
@@ -388,7 +396,7 @@ class ScriptApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\ScriptXO[]',
+                        '\Apiida\Nexus\Client\Model\ScriptXO[]',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -404,8 +412,8 @@ class ScriptApi
      * List all stored scripts
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function browseAsync()
     {
@@ -423,12 +431,12 @@ class ScriptApi
      * List all stored scripts
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function browseAsyncWithHttpInfo()
     {
-        $returnType = '\Swagger\Client\Model\ScriptXO[]';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptXO[]';
         $request = $this->browseRequest();
 
         return $this->client
@@ -472,8 +480,8 @@ class ScriptApi
      * Create request for operation 'browse'
      *
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function browseRequest()
     {
@@ -508,7 +516,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -533,7 +541,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -549,7 +557,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -565,9 +573,9 @@ class ScriptApi
      *
      * @param  string $name name (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function delete($name)
     {
@@ -581,9 +589,9 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function deleteWithHttpInfo($name)
     {
@@ -634,8 +642,8 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteAsync($name)
     {
@@ -654,8 +662,8 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function deleteAsyncWithHttpInfo($name)
     {
@@ -690,14 +698,14 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function deleteRequest($name)
     {
         // verify the required parameter 'name' is set
         if ($name === null || (is_array($name) && count($name) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $name when calling delete'
             );
         }
@@ -740,7 +748,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -765,7 +773,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -781,7 +789,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -796,11 +804,11 @@ class ScriptApi
      * Update stored script by name
      *
      * @param  string $name name (required)
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body body (optional)
+     * @param  ScriptXO $body body (optional)
      *
      * @return void
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function edit($name, $body = null)
     {
@@ -813,11 +821,11 @@ class ScriptApi
      * Update stored script by name
      *
      * @param  string $name (required)
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function editWithHttpInfo($name, $body = null)
     {
@@ -867,10 +875,10 @@ class ScriptApi
      * Update stored script by name
      *
      * @param  string $name (required)
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function editAsync($name, $body = null)
     {
@@ -888,10 +896,10 @@ class ScriptApi
      * Update stored script by name
      *
      * @param  string $name (required)
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     *@throws \InvalidArgumentException
+     * @return PromiseInterface
+     *@throws InvalidArgumentException
      */
     public function editAsyncWithHttpInfo($name, $body = null)
     {
@@ -925,16 +933,16 @@ class ScriptApi
      * Create request for operation 'edit'
      *
      * @param  string $name (required)
-     * @param  \Apiida\Nexus\Client\Model\ScriptXO $body (optional)
+     * @param  ScriptXO $body (optional)
      *
-     * @return \GuzzleHttp\Psr7\Request
-     *@throws \InvalidArgumentException
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function editRequest($name, $body = null)
     {
         // verify the required parameter 'name' is set
         if ($name === null || (is_array($name) && count($name) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $name when calling edit'
             );
         }
@@ -980,7 +988,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -1005,7 +1013,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -1021,7 +1029,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'PUT',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1037,9 +1045,9 @@ class ScriptApi
      *
      * @param  string $name name (required)
      *
-     * @return \Apiida\Nexus\Client\Model\ScriptXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return ScriptXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function read($name)
     {
@@ -1054,13 +1062,13 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\ScriptXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\ScriptXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function readWithHttpInfo($name)
     {
-        $returnType = '\Swagger\Client\Model\ScriptXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptXO';
         $request = $this->readRequest($name);
 
         try {
@@ -1112,7 +1120,7 @@ class ScriptApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\ScriptXO',
+                        '\Apiida\Nexus\Client\Model\ScriptXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1129,8 +1137,8 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function readAsync($name)
     {
@@ -1149,12 +1157,12 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function readAsyncWithHttpInfo($name)
     {
-        $returnType = '\Swagger\Client\Model\ScriptXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptXO';
         $request = $this->readRequest($name);
 
         return $this->client
@@ -1199,14 +1207,14 @@ class ScriptApi
      *
      * @param  string $name (required)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function readRequest($name)
     {
         // verify the required parameter 'name' is set
         if ($name === null || (is_array($name) && count($name) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $name when calling read'
             );
         }
@@ -1249,7 +1257,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -1274,7 +1282,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -1290,7 +1298,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1307,9 +1315,9 @@ class ScriptApi
      * @param  string $name name (required)
      * @param  string $body body (optional)
      *
-     * @return \Apiida\Nexus\Client\Model\ScriptResultXO
-     *@throws \InvalidArgumentException
-     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return ScriptResultXO
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function run1($name, $body = null)
     {
@@ -1325,13 +1333,13 @@ class ScriptApi
      * @param  string $name (required)
      * @param  string $body (optional)
      *
-     * @throws \Swagger\Client\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
-     * @return array of \Swagger\Client\Model\ScriptResultXO, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Apiida\Nexus\Client\Model\ScriptResultXO, HTTP status code, HTTP response headers (array of strings)
+     *@throws InvalidArgumentException
+     * @throws ApiException on non-2xx response
      */
     public function run1WithHttpInfo($name, $body = null)
     {
-        $returnType = '\Swagger\Client\Model\ScriptResultXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptResultXO';
         $request = $this->run1Request($name, $body);
 
         try {
@@ -1383,7 +1391,7 @@ class ScriptApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Swagger\Client\Model\ScriptResultXO',
+                        '\Apiida\Nexus\Client\Model\ScriptResultXO',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1401,8 +1409,8 @@ class ScriptApi
      * @param  string $name (required)
      * @param  string $body (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function run1Async($name, $body = null)
     {
@@ -1422,12 +1430,12 @@ class ScriptApi
      * @param  string $name (required)
      * @param  string $body (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
      */
     public function run1AsyncWithHttpInfo($name, $body = null)
     {
-        $returnType = '\Swagger\Client\Model\ScriptResultXO';
+        $returnType = '\Apiida\Nexus\Client\Model\ScriptResultXO';
         $request = $this->run1Request($name, $body);
 
         return $this->client
@@ -1473,14 +1481,14 @@ class ScriptApi
      * @param  string $name (required)
      * @param  string $body (optional)
      *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
+     * @return Request
+     *@throws InvalidArgumentException
      */
     protected function run1Request($name, $body = null)
     {
         // verify the required parameter 'name' is set
         if ($name === null || (is_array($name) && count($name) === 0)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Missing the required parameter $name when calling run1'
             );
         }
@@ -1526,7 +1534,7 @@ class ScriptApi
             
             if($headers['Content-Type'] === 'application/json') {
                 // \stdClass has no __toString(), so we should encode it manually
-                if ($httpBody instanceof \stdClass) {
+                if ($httpBody instanceof stdClass) {
                     $httpBody = \GuzzleHttp\json_encode($httpBody);
                 }
                 // array has no __toString(), so we should encode it manually
@@ -1551,7 +1559,7 @@ class ScriptApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = build_query($formParams);
             }
         }
 
@@ -1567,7 +1575,7 @@ class ScriptApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = build_query($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1579,7 +1587,7 @@ class ScriptApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
+     * @throws RuntimeException on file opening failure
      * @return array of http client options
      */
     protected function createHttpClientOption()
@@ -1588,7 +1596,7 @@ class ScriptApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }
 

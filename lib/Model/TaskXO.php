@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -30,13 +30,14 @@
 namespace Apiida\Nexus\Client\Model;
 
 use \ArrayAccess;
-use \Swagger\Client\ObjectSerializer;
+use \Apiida\Nexus\Client\ObjectSerializer;
+use DateTime;
 
 /**
  * TaskXO Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -393,7 +394,7 @@ class TaskXO implements ModelInterface, ArrayAccess
     /**
      * Gets next_run
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getNextRun()
     {
@@ -403,7 +404,7 @@ class TaskXO implements ModelInterface, ArrayAccess
     /**
      * Sets next_run
      *
-     * @param \DateTime $next_run next_run
+     * @param DateTime $next_run next_run
      *
      * @return $this
      */
@@ -417,7 +418,7 @@ class TaskXO implements ModelInterface, ArrayAccess
     /**
      * Gets last_run
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getLastRun()
     {
@@ -427,7 +428,7 @@ class TaskXO implements ModelInterface, ArrayAccess
     /**
      * Sets last_run
      *
-     * @param \DateTime $last_run last_run
+     * @param DateTime $last_run last_run
      *
      * @return $this
      */

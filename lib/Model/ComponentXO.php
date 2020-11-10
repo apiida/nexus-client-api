@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -30,13 +30,13 @@
 namespace Apiida\Nexus\Client\Model;
 
 use \ArrayAccess;
-use \Swagger\Client\ObjectSerializer;
+use \Apiida\Nexus\Client\ObjectSerializer;
 
 /**
  * ComponentXO Class Doc Comment
  *
  * @category Class
- * @package  Swagger\Client
+ * @package  Apiida\Nexus\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
@@ -63,7 +63,7 @@ class ComponentXO implements ModelInterface, ArrayAccess
         'group' => 'string',
         'name' => 'string',
         'version' => 'string',
-        'assets' => '\Swagger\Client\Model\AssetXO[]'
+        'assets' => '\Apiida\Nexus\Client\Model\AssetXO[]'
     ];
 
     /**
@@ -387,7 +387,7 @@ class ComponentXO implements ModelInterface, ArrayAccess
     /**
      * Gets assets
      *
-     * @return \Apiida\Nexus\Client\Model\AssetXO[]
+     * @return AssetXO[]
      */
     public function getAssets()
     {
@@ -397,7 +397,7 @@ class ComponentXO implements ModelInterface, ArrayAccess
     /**
      * Sets assets
      *
-     * @param \Apiida\Nexus\Client\Model\AssetXO[] $assets assets
+     * @param AssetXO[] $assets assets
      *
      * @return $this
      */
