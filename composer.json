@@ -1,0 +1,36 @@
+{
+    "name": "apiida/nexus-client-api",
+    "description": "Swagger generated PHP client of Nexus Package Manager's REST API",
+    "keywords": [
+        "nexus",
+        "api"
+    ],
+    "homepage": "https://apiida.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "APIIDA AG",
+            "homepage": "https://apiida.com"
+        },
+        {
+            "name": "Swagger and contributors",
+            "homepage": "https://github.com/swagger-api/swagger-codegen"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "psr-4": { "Apiida\\Nexus\\Client\\" : "lib/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Apiida\\Nexus\\Client\\" : "test/" }
+    }
+}
