@@ -29,6 +29,8 @@
 
 namespace Apiida\Nexus\Client\Model;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * RequestTest Class Doc Comment
  *
@@ -38,36 +40,8 @@ namespace Apiida\Nexus\Client\Model;
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
-
-    /**
-     * Setup before running any test case
-     */
-    public static function setUpBeforeClass()
-    {
-    }
-
-    /**
-     * Setup before running each test case
-     */
-    public function setUp()
-    {
-    }
-
-    /**
-     * Clean up after running each test case
-     */
-    public function tearDown()
-    {
-    }
-
-    /**
-     * Clean up after running all test cases
-     */
-    public static function tearDownAfterClass()
-    {
-    }
 
     /**
      * Test "Request"
